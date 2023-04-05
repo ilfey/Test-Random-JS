@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Math.random()</title>
+    <link rel="stylesheet" href="normalize.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="wrapper">
+        <header class="container header">
+            <h1>Test Math.random()</h1>
+        </header>
+        <main class="container main">
+            <canvas class="chart" id="myChart"></canvas>
+            <form action="#">
+                <label for="random_count">Random count:</label>
+                <input type="number" name="random_count" value="100" id="random_count">
+                <input type="button" value="Update chart" onclick="onClickUpdate()">
+            </form>
+        </main>
+        <footer class="container footer">
+            <p>© ilfey 2023</p>
+            <a href="https://github.com/ilfey/Test-Random-JS">Source code</a>
+        </footer>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script defer src="index.js"></script>
+</body>
+
+</html>
