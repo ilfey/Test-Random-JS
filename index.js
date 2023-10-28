@@ -1,81 +1,90 @@
-function countDup(dups) {
-    const map = new Map();
+const ctx = document.getElementById("myChart");
+const input = document.getElementById("random_count");
+const btn = document.getElementById("btnUpdate");
 
-    for (const dup of dups) {
-        map.set(dup, map.get(dup) + 1 || 1);
-    }
+const generateData = (randomCount = 100) => {
+  // Fill array with random numbers
+  const randomArr = Array.from({ length: randomCount }, () =>
+    Math.floor(Math.random() * 100)
+  );
 
-    return map;
-}
+  // Count each number
+  const map = new Map();
 
-function randomArray(count) {
-    const data = Array();
-    
-    for (var i = 0; i < count; i++) {
-        data.push(Math.floor(Math.random() * 100));
-    }
-    
-    return data;
-}
+  randomArr.forEach((v) => {
+    map.set(v, map.get(v) + 1 || 1);
+  });
 
-function generateData(randomCount = 100) {
-    const arr = Array.from(countDup(randomArray(randomCount)));
+  const arr = Array.from(map);
 
-    const axis = {};
+  const axis = {};
 
-    for (var i = 0; i < 100; i++) {
-        axis[i] = 0
-    }
+  for (var i = 0; i < 100; i++) {
+    axis[i] = 0;
+  }
 
-    arr.forEach((v) => {
-        axis[v[0]] = v[1]
-    });
+  arr.forEach((v) => {
+    axis[v[0]] = v[1];
+  });
 
-    return [
-        Object.keys(axis),
-        Object.values(axis),
-    ];
-}
-
-function setChart(context, x, y) {
-    const data = {
-        labels: x,
-        datasets: [{
-            backgroundColor: "rgba(0,0,255,1.0)",
-            borderColor: "rgba(0,0,255,0.1)",
-            data: y,
-        }]
-    };
-
-    const config = {
-        type: 'line',
-        data: data,
-    };
-
-    return new Chart(context, config);
-}
-
-const ctx = document.getElementById('myChart');
+  return [Object.keys(axis), Object.values(axis)];
+};
 
 const [x, y] = generateData(100);
 
-const chart = setChart(ctx, x, y);
-
-function onClickUpdate() {
-    const count = document.getElementById("random_count").value;
-
-    if (count < 1) {
-        alert("error: random_count cannot be less than 1");
-    }
-
-    const [x, y] = generateData();
-
-    chart.data.labels = x
-    chart.data.datasets = [{
+const chart = new Chart(ctx, {
+  type: "line",
+  data: {
+    labels: x,
+    datasets: [
+      {
         backgroundColor: "rgba(0,0,255,1.0)",
         borderColor: "rgba(0,0,255,0.1)",
         data: y,
-    }]
-    chart.update();
-}
+      },
+    ],
+  },
+  options: {
+    responsive: true,
+    interaction: {
+      intersect: false,
+    },
+    scales: {
+      x: {
+        display: true,
+        title: {
+          display: true,
+          text: "Random number",
+        },
+      },
+      y: {
+        display: true,
+        title: {
+          display: true,
+          text: "Random numbers count",
+        },
+      },
+    },
+  },
+});
 
+btn.addEventListener("click", () => {
+  const count = input.value;
+
+  if (count < 1) {
+    alert("error: random_count cannot be less than 1");
+  }
+
+  const [x, y] = generateData(count);
+
+  chart.data.labels = x;
+  chart.data.datasets = [
+    {
+      backgroundColor: "rgba(0,0,255,1.0)",
+      borderColor: "rgba(0,0,255,0.1)",
+      data: y,
+    },
+  ];
+
+  chart.update();
+});
